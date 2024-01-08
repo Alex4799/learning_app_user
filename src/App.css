@@ -1,38 +1,160 @@
-.App {
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+:root{
+    --color-primary: #6C9BCF;
+    --color-danger: #FF0060;
+    --color-success: #1B9C85;
+    --color-warning: #F7D060;
+    --color-white: #fff;
+    --color-info-dark: #7d8da1;
+    --color-dark: #000000;
+    --color-light: rgba(132, 139, 200, 0.18);
+    --color-dark-variant: #677483;
+    --color-background: #e4e4e4;
+
+    --card-border-radius: 2rem;
+    --border-radius-1: 0.4rem;
+    --border-radius-2: 1.2rem;
+
+    --card-padding: 1.8rem;
+    --padding-1: 1.2rem;
+
+    --box-shadow: 0 2rem 3rem var(--color-light);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.dark-mode-variables{
+    --color-background: #181a1e;
+    --color-white: #202528;
+    --color-dark: #edeffd;
+    --color-dark-variant: #a3bdcc;
+    --color-light: rgba(0, 0, 0, 0.4);
+    --box-shadow: 0 2rem 3rem var(--color-light);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+*{
+    font-family: 'Playfair Display', serif;
+    text-decoration: none;
+    list-style: none;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+header{
+    background-color: var(--color-background);
+    color: var(--color-dark);
+    z-index: 100;
 }
 
-.App-link {
-  color: #61dafb;
+body{
+    min-height: 100vh;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a{
+    color: var(--color-dark);
+    text-decoration: none;
+}
+
+.menue_item{
+    position: relative;
+}
+
+.menue_item a{
+    padding: 5px;
+}
+
+.menue_item a::after{
+    width: 0%;
+    background-color: red;
+    height: 3px;
+    content:"";
+    position: absolute;
+    left: -3px;
+    bottom: -5px;
+    transition: all ease-in-out 0.5s;
+}
+
+.menue_item a::before{
+    width: 3px;
+    background-color: red;
+    height: 0%;
+    content:"";
+    position: absolute;
+    left: -3px;
+    bottom:-5px;
+    transition: all ease-in-out 0.5s;
+}
+
+.active a::after {
+    width: 100%;
+}
+
+.active a::before{
+    height: 100%;
+}
+
+.menue_item a:hover::after{
+    width: 100%;
+}
+
+.menue_item a:hover::before{
+    height: 100%;
+}
+
+.three-menue{
+    display: none;
+}
+
+.nav-btn-group{
+    display: flex;
+}
+
+.side-nav{
+    height: 90vh;
+    width: 0%;
+    transition: all ease-in-out 1s;
+    display: none;
+    position: relative;
+    background-color: var(--color-background);
+    color: var(--color-dark);
+}
+
+.crossx{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.blog,.course,.member-header{
+    padding: 5% 10% 5% 10%;
+}
+
+.bg-deep-dark{
+    background-color: var(--color-dark) !important;
+}
+
+.text-deep-dark{
+    color: var(--color-dark) !important;
+}
+
+.hr{
+    height: 3px;
+    width: 100%;
+    background-color: var(--color-dark);
+}
+
+.footer{
+    background-color: var(--color-background);
+    padding: 3% 10% 3% 10%;
+}
+
+@media (max-width:900px) {
+    .menues{
+        display: none;
+    }
+
+    .three-menue{
+        display: flex;
+    }
+
+    .nav-btn-group{
+        display: none;
+    }
 }

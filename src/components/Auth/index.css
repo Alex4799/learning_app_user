@@ -1,0 +1,17 @@
+.parents{
+    height: 150vh;
+    background-image: linear-gradient(to right, #22c1c3 , #e579f3);
+}
+
+
+.buttonone{
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    background-image: linear-gradient(to right, #22c1c3 , #e579f3);
+    border: none;
+    outline: none;
+    color: white;
+    font-weight: bolder;
+    border-radius: 10px;
+}
