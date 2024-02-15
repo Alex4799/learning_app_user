@@ -122,7 +122,7 @@ a{
     right: 10px;
 }
 
-.blog,.course,.member-header{
+.blog,.course,.member-header,.history,.address{
     padding: 5% 10% 5% 10%;
 }
 
@@ -142,7 +142,25 @@ a{
 
 .footer{
     background-color: var(--color-background);
+    color: var(--color-dark);
     padding: 3% 10% 3% 10%;
+}
+
+.bag-white{
+    background-color: var(--color-background);
+}
+
+.img-container{
+    height: 150px;
+    overflow: hidden;
+}
+
+.display-none{
+    display: none;
+}
+
+.comment-image{
+    width: 200px;
 }
 
 @media (max-width:900px) {

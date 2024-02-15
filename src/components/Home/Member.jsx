@@ -1,58 +1,67 @@
+import { useEffect, useState } from "react";
+import { api, header } from "../../api/api";
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+
 function Member(){
+
+  const [members,SetMembers] = useState([]);
+
+  const getData = async ()=>{
+    header.Authorization='Bearer '+JSON.parse(localStorage.getItem('token'));
+    const response = await api.get('user/home/member',{headers:header});
+      
+      for (let i = 0; i < response.data.length; i++) {
+        if (response.data[i].image!=null) {
+          response.data[i].image='https://learningapp.alexlucifer.info/storage/profile/'+response.data[i].image;
+          SetMembers(response.data);
+        }else{
+          if (response.data[i].gender=='male') {
+            response.data[i].image='https://learningapp.alexlucifer.info/image/default-male-image.png';
+            SetMembers(response.data);
+          }else{
+            response.data[i].image='https://learningapp.alexlucifer.info/image/default-female-image.webp';
+            SetMembers(response.data);
+          }
+        }
+        
+      }
+      SetMembers(response.data);
+  }
+
+  useEffect(()=>{
+    getData();
+  },[]);
+
     return(
         <section className="member">
         <div className="member-header">
             <h3>Member</h3>
             <div className="hr"></div>
         </div>
-        <div className=" p-5">
-          <div className="row">
-            <div className="col-md-6 offset-md-3">
-              <div id="carouselExampleIndicators" className="carousel slide">
-                <div className="carousel-indicators">
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" className="active bg-deep-dark" aria-current="true" aria-label="Slide 1"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" className=" bg-deep-dark" aria-label="Slide 2"></button>
-                  <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" className=" bg-deep-dark" aria-label="Slide 3"></button>
-                </div>
-                <div className="carousel-inner">
-                  <div className="carousel-item active">
-                    <div className="card p-5">
-                      <img src="./image/coding_cover.jpg" className="card-img-top w-100" alt="..." />
-                      <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <h6>Instructor</h6>
+        <div className="row container-fluid">
+          <div className="col-md-8 offset-md-2">
+          <OwlCarousel className='owl-theme' loop margin={10} nav>
+        {
+                    members.length!=0 ? (
+                      members.map((member)=>
+
+                      <div className='item' key={member.id}>
+                            <div className="card bag-white text-deep-dark border border-white">
+                              <div className="d-flex justify-content-center">
+                                <img src={member.image} className="card-img-top w-50" alt="profile" />  
+                              </div>
+                              <div className="card-body">
+                                <h5 className="text-center">{member.name}</h5>
+                                <h6 className="text-center">{member.position}</h6>
+                              </div>
+                            </div>
                       </div>
-                    </div>
-                  </div>
-                  <div className="carousel-item">
-                    <div className="card p-5">
-                      <img src="./image/coding_cover.jpg" className="card-img-top w-100" alt="..." />
-                      <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <h6>Instructor</h6>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="carousel-item">
-                    <div className="card p-5">
-                      <img src="./image/coding_cover.jpg" className="card-img-top w-100" alt="..." />
-                      <div className="card-body">
-                        <h5 className="card-title">Card title</h5>
-                        <h6>Instructor</h6>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                  <span className="carousel-control-prev-icon bg-deep-dark" aria-hidden="true"></span>
-                  <span className="visually-hidden">Previous</span>
-                </button>
-                <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                  <span className="carousel-control-next-icon bg-deep-dark" aria-hidden="true"></span>
-                  <span className="visually-hidden">Next</span>
-                </button>
-              </div>
-            </div>
+                      )
+                    ) : null 
+                  }
+        </OwlCarousel>
           </div>
         </div>
       </section>

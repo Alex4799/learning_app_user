@@ -1,8 +1,15 @@
-import { useLocation ,NavLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useLocation ,NavLink, useNavigate } from 'react-router-dom';
+import { api, header } from '../../api/api';
 
 function Nav() {
 
     const location = useLocation()
+    const navigate=useNavigate();
+    const [logo,setLogo] = useState('https://learningapp.alexlucifer.info/image/ANGLE_logo.png');
+    const [title,setTitle] = useState('Angle');
+    const [message_count,setMessageCount] = useState(0);
+
     const showSidebar=()=>{
         const threeMenue=document.getElementById('three-menue');
         const sideNav=document.getElementById('side-nav');
@@ -19,50 +26,108 @@ function Nav() {
         threeMenue.style.display="block";
     }
 
+
+    const logout=()=>{
+        localStorage.setItem("token","null");
+        navigate('/');
+    }
+
+    const checkLayout=async () =>{
+        const response= await api.get('user/interface');
+        if (response.data) {
+          if (response.data.logo!=null) {
+            setLogo(`https://learningapp.alexlucifer.info/storage/interface/${response.data.logo}`);
+          }
+          setTitle(response.data.title);
+
+        }
+    }
+
+    const checkMessage = async () =>{
+        const token = localStorage.getItem('token');
+        if (token!="null") {
+            header.Authorization='Bearer '+JSON.parse(localStorage.getItem('token'));
+            const response= await api.get('user/message/check',{headers:header});
+            if (response.data) {
+                if (response.data.message_count!=0) {
+                    setMessageCount(response.data.message_count);
+                }
+            }
+        }
+    }
+
+    useEffect(()=>{
+        checkLayout();
+        checkMessage();
+    },[]);
+
     return(
         <header className="nav p-1 p-md-2 position-sticky top-0 shadow">
         <div className="row w-100">
             <div className="logo col-8 col-md-3 d-flex align-items-center">
                 <div className="row">
                     <div className="col-4 d-flex align-items-center">
-                        <img src="./image/ANGLE_logo.png" alt="logo image" className="w-100 rounded"/>
+                        <img src={logo} alt="logo image" className="w-100 rounded"/>
                     </div>
                     <div className="col-8 d-flex align-items-center">
                         <div>
-                            <h3 className="fs-4">ANGLE</h3>
+                            <h3 className="fs-4">{title}</h3>
                         </div>
                     </div>
                 </div>
             </div>
             <div className="menues col col-md-7">
-                <ul className="d-flex justify-content-around pt-3 fs-5">
-                    <li className={location.pathname=="/home" ? 'menue_item active' : 'menue_item'}>
-                        <NavLink to="/home" className="text-decoration-none">
-                            Home
-                        </NavLink>
-                        
-                    </li>
-                    <li className={location.pathname=="/blog" ? 'menue_item active' : 'menue_item'}>
-                        <NavLink to="/blog" className="text-decoration-none">
-                            Blog
-                        </NavLink>
-                    </li>
-                    <li className={location.pathname=="/lesson" ? 'menue_item active' : 'menue_item'}>
-                        <NavLink to="/lesson" className="text-decoration-none">
-                            Lesson
-                        </NavLink>
-                    </li>
-                    <li className={location.pathname=="/about" ? 'menue_item active' : 'menue_item'}>
-                        <NavLink to="/about" className="text-decoration-none">
-                            About Us
-                        </NavLink>
-                    </li>
-                    <li className={location.pathname=="/contact" ? 'menue_item active' : 'menue_item'}>
-                        <NavLink to="/contact" className="text-decoration-none">
-                            Contact Us
-                        </NavLink>
-                    </li>
-                </ul>
+                {
+                    location.pathname=='/'? (
+                        <div></div>
+                    ): location.pathname=='/register'? (
+                        <div></div>
+                    ):(
+                        <ul className="d-flex justify-content-around pt-3 fs-5">
+                            <li className={location.pathname=="/home" ? 'menue_item active' : 'menue_item'}>
+                                <NavLink to="/home" className="text-decoration-none">
+                                    Home
+                                </NavLink>
+                            </li>
+                            <li className={location.pathname=="/blog" ? 'menue_item active' : 'menue_item'}>
+                                <NavLink to="/blog" className="text-decoration-none">
+                                    Blog
+                                </NavLink>
+                            </li>
+                            <li className={location.pathname=="/course" ? 'menue_item active' : 'menue_item'}>
+                                <NavLink to="/course" className="text-decoration-none">
+                                    Course
+                                </NavLink>
+                            </li>
+                            <li className={location.pathname=="/about" ? 'menue_item active' : 'menue_item'}>
+                                <NavLink to="/about" className="text-decoration-none">
+                                    About Us
+                                </NavLink>
+                            </li>
+                            <li className={location.pathname=="/contact" ? 'menue_item active' : 'menue_item'}>
+                                <NavLink to="/contact" className="text-decoration-none">
+                                    Contact Us
+                                </NavLink>
+                            </li>
+                            {
+                                message_count!=0 ? (
+                                    <div>
+                                        <NavLink to='/message/list' className="text-decoration-none">
+                                        <button type="button" className="btn btn-secondary position-relative">
+                                            <i className="fa-solid fa-bell"></i>
+                                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                                {message_count}
+                                                <span className="visually-hidden">unread messages</span>
+                                            </span>
+                                        </button>
+                                        </NavLink>
+                                    </div>
+                                ):(null)
+                            }
+                        </ul>
+
+                    )
+                }
             </div>
             <div className="button col-4 col-md-2 pt-3">
                 <div className="d-flex flex-wrap">
@@ -81,8 +146,9 @@ function Nav() {
                             </div>
                         ) : (
                             <div className=" align-items-center gap-2 nav-btn-group">
-                                <a className="btn btn-primary">Mg Mg</a>
+                                <button onClick={()=>{logout()}} className="btn btn-danger">Logout</button>
                             </div>
+
                         )
                     }
                     <div className="align-items-center justify-content-end three-menue" onClick={()=>showSidebar()} id="three-menue">
@@ -94,27 +160,27 @@ function Nav() {
         <div className="p-5 side-nav shadow" id="side-nav">
           <div className="">
             <ul className=" fs-5">
-                <li className={location.pathname=="/home" ? 'menue_item active' : 'menue_item'}>
+                <li className={location.pathname=="/home" ? 'menue_item py-2 active' : 'menue_item py-2'}>
                     <NavLink to="/home" className="text-decoration-none">
                         Home
                     </NavLink>     
                 </li>
-                <li className={location.pathname=="/blog" ? 'menue_item active' : 'menue_item'}>
+                <li className={location.pathname=="/blog" ? 'menue_item py-2 active' : 'menue_item py-2'}>
                     <NavLink to="/blog" className="text-decoration-none">
                         Blog
                     </NavLink>
                 </li>
-                <li className={location.pathname=="/lesson" ? 'menue_item active' : 'menue_item'}>
-                    <NavLink to="/lesson" className="text-decoration-none">
-                        Lesson
+                <li className={location.pathname=="/course" ? 'menue_item py-2 active' : 'menue_item py-2'}>
+                    <NavLink to="/course" className="text-decoration-none">
+                        Course
                     </NavLink>
                 </li>
-                <li className={location.pathname=="/about" ? 'menue_item active' : 'menue_item'}>
+                <li className={location.pathname=="/about" ? 'menue_item py-2 active' : 'menue_item py-2'}>
                     <NavLink to="/about" className="text-decoration-none">
                         About Us
                     </NavLink>
                 </li>
-                <li className={location.pathname=="/contact" ? 'menue_item active' : 'menue_item'}>
+                <li className={location.pathname=="/contact" ? 'menue_item py-2 active' : 'menue_item py-2'}>
                     <NavLink to="/contact" className="text-decoration-none">
                         Contact Us
                     </NavLink>
@@ -122,19 +188,23 @@ function Nav() {
                 {
                     location.pathname=='/' ? (
                         <>
-                            <li className=" py-3">    
+                            <li className=" py-2">    
                                 <NavLink to="/register" className="btn btn-primary">
                                     Register
                                 </NavLink>
                             </li>
                         </>) : location.pathname=='/register' ? (
                         <>
-                            <li className=" py-3">
+                            <li className=" py-2">
                                 <NavLink to="/" className="btn btn-primary">
                                     login
                                 </NavLink>
                             </li>
-                        </>) : null
+                        </>) : (
+                            <li className=" py-2">
+                                <button onClick={()=>{logout()}} className='btn btn-danger'>Logout</button>
+                            </li>
+                        )
                 }
             </ul>
           </div>

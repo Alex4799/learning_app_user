@@ -1,6 +1,6 @@
 function Footer(){
     return(
-        <footer className="footer">
+        <footer className="footer shadow">
         <div className="row">
           <div className="col-md-5">
             <div>

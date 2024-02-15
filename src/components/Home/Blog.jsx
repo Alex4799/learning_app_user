@@ -1,4 +1,21 @@
+import { useEffect, useState } from "react";
+import { api, header } from "../../api/api";
+import { NavLink } from "react-router-dom";
+
 function Blog(){
+
+  const [blogs,setBlog]=useState([]);
+
+  const getBlog=async ()=>{
+    header.Authorization='Bearer '+JSON.parse(localStorage.getItem('token'));
+    const response=await api.get('user/home/blog',{headers:header});
+    setBlog(response.data.data)
+  }
+
+  useEffect(()=>{
+    getBlog();
+  },[])
+
     return(
         <section className="blog">
         <div className="d-flex justify-content-between">
@@ -7,38 +24,23 @@ function Blog(){
         </div>
         <div className="hr"></div>
         <div className="row blog-container py-3">
-            <div className="card col-md-3">
-                <img src="./image/cover.webp" className=" w-100" alt="./image/cover.webp"/>
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="btn btn-primary">Go somewhere</a>
-                </div>
+            {
+              blogs.length!=0 ? (
+                blogs.map((blog)=>
+                <div className=" col-md-3" key={blog.id}>
+                  <div className="border border-white shadow rounded p-3">
+                    <h5 className=" text-center">{blog.name}</h5>
+                    <p className="">{blog.description.slice(0,100)+'...'}</p>
+                    <NavLink to={`/blog/details/${blog.id}`}>
+                        <button className="btn btn-primary"><i className="fa-solid fa-eye"></i></button>
+                    </NavLink>
+                  </div>
               </div>
-              <div className="card col-md-3">
-                <img src="./image/cover.webp" className=" w-100" alt="./image/cover.webp"/>
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-              <div className="card col-md-3">
-                <img src="./image/cover.webp" className=" w-100" alt="./image/cover.webp"/>
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-              <div className="card col-md-3">
-                <img src="./image/cover.webp" className=" w-100" alt="./image/cover.webp"/>
-                <div className="card-body">
-                  <h5 className="card-title">Card title</h5>
-                  <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" className="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
+                )
+              ) : (
+                <h1>There is no Blog</h1>
+              )
+            }
         </div>
     </section>
     );
