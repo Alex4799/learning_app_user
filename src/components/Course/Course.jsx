@@ -21,9 +21,9 @@ function Course(){
       }
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].image!=null) {
-          response.data[i].image='https://learningapp.alexlucifer.info/storage/courseImage/'+response.data[i].image;
+          response.data[i].image='http://127.0.0.1:8000/storage/courseImage/'+response.data[i].image;
         }else{
-          response.data[i].image='https://learningapp.alexlucifer.info/image/default.jpg';
+          response.data[i].image='http://127.0.0.1:8000/image/default.jpg';
         }
       }
       setLoading(false);

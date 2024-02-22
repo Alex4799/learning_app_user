@@ -1,5 +1,9 @@
-.parents{
+.parentsLogin{
     height: 150vh;
+    background-image: linear-gradient(to right, #22c1c3 , #e579f3);
+}
+
+.parentsRegister{
     background-image: linear-gradient(to right, #22c1c3 , #e579f3);
 }
 

@@ -20,7 +20,7 @@ function Blog(){
         <section className="blog">
         <div className="d-flex justify-content-between">
             <h3>Blog</h3>
-            <a href="">See More &gt;&gt;&gt;</a>
+            <NavLink to={'/blog'}>See More &gt;&gt;&gt;</NavLink>
         </div>
         <div className="hr"></div>
         <div className="row blog-container py-3">

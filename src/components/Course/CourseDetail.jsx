@@ -20,9 +20,9 @@ function CourseDetail(){
         if (response.data) {
             setLoading(false);
             if (response.data.course.image!=null) {
-                response.data.course.image='https://learningapp.alexlucifer.info/storage/courseImage/'+response.data.course.image;
+                response.data.course.image='http://127.0.0.1:8000/storage/courseImage/'+response.data.course.image;
             }else{
-                response.data.course.image='https://learningapp.alexlucifer.info/image/default.jpg';
+                response.data.course.image='http://127.0.0.1:8000/image/default.jpg';
             }
             setCourse(response.data.course);
             setCourseCategory(response.data.courseCategory);

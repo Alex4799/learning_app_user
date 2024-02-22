@@ -6,9 +6,10 @@ function Nav() {
 
     const location = useLocation()
     const navigate=useNavigate();
-    const [logo,setLogo] = useState('https://learningapp.alexlucifer.info/image/ANGLE_logo.png');
+    const [logo,setLogo] = useState('http://127.0.0.1:8000/image/ANGLE_logo.png');
     const [title,setTitle] = useState('Angle');
     const [message_count,setMessageCount] = useState(0);
+    const [userData,setUser] = useState({name:'User'});
 
     const showSidebar=()=>{
         const threeMenue=document.getElementById('three-menue');
@@ -36,7 +37,7 @@ function Nav() {
         const response= await api.get('user/interface');
         if (response.data) {
           if (response.data.logo!=null) {
-            setLogo(`https://learningapp.alexlucifer.info/storage/interface/${response.data.logo}`);
+            setLogo(`http://127.0.0.1:8000/storage/interface/${response.data.logo}`);
           }
           setTitle(response.data.title);
 
@@ -51,15 +52,31 @@ function Nav() {
             if (response.data) {
                 if (response.data.message_count!=0) {
                     setMessageCount(response.data.message_count);
+                }else{
+                    setMessageCount(0);
                 }
             }
+        }
+    }
+
+    const getUserData = async ()=>{
+        const token = localStorage.getItem('token');
+        if (token!="null") {
+            header.Authorization='Bearer '+JSON.parse(localStorage.getItem('token'));
+            const response= await api.get('user/data',{headers:header});
+            if (response.data) {
+                setUser(response.data);
+            }
+        }else{
+            setUser({name:'User'});
         }
     }
 
     useEffect(()=>{
         checkLayout();
         checkMessage();
-    },[]);
+        getUserData();
+    },[location.pathname]);
 
     return(
         <header className="nav p-1 p-md-2 position-sticky top-0 shadow">
@@ -146,7 +163,17 @@ function Nav() {
                             </div>
                         ) : (
                             <div className=" align-items-center gap-2 nav-btn-group">
-                                <button onClick={()=>{logout()}} className="btn btn-danger">Logout</button>
+                                <div className="dropdown">
+                                    <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {userData.name}
+                                    </button>
+                                    <ul className="dropdown-menu">
+                                        <li><NavLink to={'/profile'} className="dropdown-item">Profile</NavLink></li>
+                                        <li><NavLink to={'/change/password'} className="dropdown-item">Change Password</NavLink></li>
+                                        <li><a onClick={()=>{logout()}} className="dropdown-item">Logout</a></li>
+                                    </ul>
+                                </div>
+                                
                             </div>
 
                         )
@@ -202,7 +229,16 @@ function Nav() {
                             </li>
                         </>) : (
                             <li className=" py-2">
-                                <button onClick={()=>{logout()}} className='btn btn-danger'>Logout</button>
+                                <div className="dropdown">
+                                    <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {userData.name}
+                                    </button>
+                                    <ul className="dropdown-menu">
+                                        <li><NavLink to={'/profile'} className="dropdown-item">Profile</NavLink></li>
+                                        <li><NavLink to={'/change/password'} className="dropdown-item">Change Password</NavLink></li>
+                                        <li><a onClick={()=>{logout()}} className="dropdown-item">Logout</a></li>
+                                    </ul>
+                                </div>
                             </li>
                         )
                 }

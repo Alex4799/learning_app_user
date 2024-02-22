@@ -13,7 +13,7 @@ function Login(){
     const [error,setError] = useState('');
     const location = useLocation();
     const navigate=useNavigate();
-    const [logo,setLogo] = useState('https://learningapp.alexlucifer.info/image/ANGLE_logo.png');
+    const [logo,setLogo] = useState('http://127.0.0.1:8000/image/ANGLE_logo.png');
     const [title,setTitle] = useState('Angle');
 
     const login =async ()=>{
@@ -53,7 +53,7 @@ function Login(){
         const response= await api.get('user/interface');
         if (response.data) {
           if (response.data.logo!=null) {
-            setLogo(`https://learningapp.alexlucifer.info/storage/interface/${response.data.logo}`);
+            setLogo(`http://127.0.0.1:8000/storage/interface/${response.data.logo}`);
           }
           setTitle(response.data.title);
 
@@ -75,7 +75,7 @@ function Login(){
     },[])
 
     return(
-        <div className="d-flex justify-content-center align-items-center parents">
+        <div className="d-flex justify-content-center align-items-center parentsLogin">
         <div className="container-fluid row">
             <div className="col-lg-4 offset-lg-4 bg-white shadow p-3 rounded">
                 <div className="p-4">

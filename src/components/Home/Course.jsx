@@ -11,9 +11,9 @@ function Course(){
       const response=await api.get('user/home/course',{headers:header});
       for (let i = 0; i < response.data.data.length; i++) {
         if (response.data.data[i].image!=null) {
-          response.data.data[i].image='https://learningapp.alexlucifer.info/storage/courseImage/'+response.data.data[i].image;
+          response.data.data[i].image='http://127.0.0.1:8000/storage/courseImage/'+response.data.data[i].image;
         }else{
-          response.data.data[i].image='https://learningapp.alexlucifer.info/image/default.jpg';
+          response.data.data[i].image='http://127.0.0.1:8000/image/default.jpg';
         }
       }
       setCourse(response.data.data);
@@ -28,7 +28,7 @@ function Course(){
         <section className="course">
         <div className="d-flex justify-content-between">
             <h3>Course</h3>
-            <a href="">See More &gt;&gt;&gt;</a>
+            <NavLink to={'/course'}>See More &gt;&gt;&gt;</NavLink>
         </div>
         <div className="hr"></div>
         <div className="row course-container py-3">

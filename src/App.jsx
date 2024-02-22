@@ -19,6 +19,10 @@ import AboutUs from './components/AboutUs/AboutUs'
 import SendMessage from './components/Message/SendMessage'
 import ListMessage from './components/Message/ListMessage'
 import ViewMessage from './components/Message/ViewMessage'
+import MemberList from './components/AboutUs/MemberList'
+import Profile from './components/Profile/Profile'
+import Edit from './components/Profile/Edit'
+import PasswordChange from './components/Profile/PasswordChange'
 
 function App() {
   const location = useLocation();
@@ -65,9 +69,12 @@ function App() {
         <Route path='/' element={<div><Login></Login></div>} />
         <Route path='/register' element={<div><Register></Register></div>}/>
 
+        <Route path='/profile' element={<div><Profile></Profile></div>}/>
+        <Route path='/edit/profile' element={<div><Edit></Edit></div>}/>
+        <Route path='/change/password' element={<div><PasswordChange></PasswordChange></div>}/>
+
 
         <Route path='/home' element={<div><Home></Home></div>} />
-
 
         <Route path='/blog' element={<div><Blog></Blog></div>}/>
         <Route path='/blog/details/:id' element={<div><BlogDetail></BlogDetail></div>}/>
@@ -77,11 +84,11 @@ function App() {
         <Route path='/course/category/:id' element={<div><CourseCategory></CourseCategory></div>}/>
         <Route path='/course/enroll/:id/:status/:detailId' element={<div><EnrollCourse></EnrollCourse></div>}/>
 
-
         <Route path='/lesson/:id' element={<div><LessonList></LessonList></div>}/>
         <Route path='/lesson/view/:course_category/:id' element={<div><ViewLesson></ViewLesson></div>}/>
 
         <Route path='/about' element={<div><AboutUs></AboutUs></div>}/>
+        <Route path='/member/list' element={<div><MemberList></MemberList></div>}/>
 
         <Route path='/contact' element={<div><SendMessage></SendMessage></div>}/>
         <Route path='/message/list' element={<div><ListMessage></ListMessage></div>}/>

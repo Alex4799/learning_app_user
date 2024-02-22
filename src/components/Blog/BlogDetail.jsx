@@ -31,7 +31,7 @@ function BlogDetail(){
     const changeCommentimage =(data)=>{
         for (let i = 0; i < data.length; i++) {
             if (data[i].image!=null) {
-              data[i].image='https://learningapp.alexlucifer.info/storage/commentImage/'+data[i].image;
+              data[i].image='http://127.0.0.1:8000/storage/commentImage/'+data[i].image;
             }
           }
         setComments(data);
